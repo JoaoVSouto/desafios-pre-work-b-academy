@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="src/style.css">
     <title>Dia 3</title>
   </head>
   <body>
@@ -11,6 +12,11 @@
       <label for="name">Digite seu nome:</label>
       <input type="text" data-js="name" id="name" />
     </form>
+
+    <div data-js="color-playground-container" class="color-playground-container">
+      <div data-js="colors-showcase-container" class="colors-showcase-container">
+      </div>
+    </div>
 
     <script type="module" src="/src/main.js"></script>
   </body>

@@ -6,3 +6,24 @@
   color: #2c3e50;
   margin-top: 60px;
 }
+
+.color-playground-container {
+  display: flex;
+  margin-top: 3rem;
+}
+
+.color-playground-container select {
+  height: 8rem;
+}
+
+.colors-showcase-container {
+  margin-left: 1rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.colors-showcase-container > div {
+  width: 100px;
+  height: 100px;
+}
