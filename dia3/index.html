@@ -18,6 +18,52 @@
       </div>
     </div>
 
+    <div class="cars-container">
+      <form data-js="car-form" class="car-form">
+        <div>
+          <label for="image">Imagem (URL)</label>
+          <input type="url" id="image" required />
+        </div>
+        <div>
+          <label for="model">Marca / Modelo</label>
+          <input type="text" id="model" required />
+        </div>
+        <div>
+          <label for="year">Ano</label>
+          <input type="number" id="year" min="1769" max="2022" required />
+        </div>
+        <div>
+          <label for="plate">Placa</label>
+          <input
+            type="text"
+            id="plate"
+            required
+            placeholder="e.g. XXX-9999"
+            pattern="[A-Z]{3}-[0-9]{4}"
+          />
+        </div>
+        <div>
+          <label for="color">Cor</label>
+          <input type="color" id="color" />
+        </div>
+        <button type="submit" class="car-form-submit-btn">Salvar dados</button>
+      </form>
+
+      <table class="cars-table" data-js="cars-table">
+        <thead>
+          <tr>
+            <th>Imagem</th>
+            <th>Marca / Modelo</th>
+            <th>Ano</th>
+            <th>Placa</th>
+            <th>Cor</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
