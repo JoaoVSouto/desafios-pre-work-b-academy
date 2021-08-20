@@ -1,5 +1,19 @@
 import './style.css'
 
+function showNotFoundCarsMessage() {
+  const notFoundMessage = document.querySelector(
+    '[data-js="cards-not-found-msg"]'
+  )
+  notFoundMessage.classList.remove('hide')
+}
+
+function hideNotFoundCarsMessage() {
+  const notFoundMessage = document.querySelector(
+    '[data-js="cards-not-found-msg"]'
+  )
+  notFoundMessage.classList.add('hide')
+}
+
 function insertNewEntry({ imageUrl, model, year, plate, color }) {
   const carsTable = document.querySelector('[data-js="cars-table"]')
 
@@ -24,6 +38,29 @@ function insertNewEntry({ imageUrl, model, year, plate, color }) {
   colorBlock.classList.add('car-color')
   colorBlock.style.backgroundColor = color
   colorCell.appendChild(colorBlock)
+}
+
+async function fetchCars() {
+  const response = await fetch('http://localhost:3333/cars')
+
+  if (!response.ok) {
+    return
+  }
+
+  const carsData = await response.json()
+
+  if (carsData.length === 0) {
+    showNotFoundCarsMessage()
+  } else {
+    hideNotFoundCarsMessage()
+    carsData.forEach(car => insertNewEntry({
+      imageUrl: car.image,
+      model: car.brandModel,
+      year: car.year,
+      plate: car.plate,
+      color: car.color,
+    }))
+  }
 }
 
 const carForm = document.querySelector('[data-js="car-form"]')
@@ -56,3 +93,4 @@ carForm.addEventListener('submit', e => {
   carForm.image.focus()
 })
 
+fetchCars()
