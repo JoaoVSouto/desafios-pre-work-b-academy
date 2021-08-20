@@ -31,16 +31,40 @@ function hideErrorMessage() {
   carRequestErrorMessage.classList.add('hide')
 }
 
+async function deleteCar(carRow, carPlate) {
+  const response = await fetch(CARS_URL, {
+    method: 'DELETE',
+    headers: {
+      'Content-type': 'application/json',
+    },
+    body: JSON.stringify({ plate: carPlate }),
+  })
+
+  if (!response.ok) {
+    return
+  }
+
+  carRow.remove()
+
+  const carsRows = document.querySelectorAll('[data-car-row]')
+
+  if (carsRows.length === 0) {
+    showNotFoundCarsMessage()
+  }
+}
+
 function insertNewEntry({ imageUrl, model, year, plate, color }) {
   const carsTable = document.querySelector('[data-js="cars-table"]')
 
   const newRow = carsTable.insertRow(-1)
+  newRow.dataset.carRow = ''
 
   const imageCell = newRow.insertCell(0)
   const modelCell = newRow.insertCell(1)
   const yearCell = newRow.insertCell(2)
   const plateCell = newRow.insertCell(3)
   const colorCell = newRow.insertCell(4)
+  const actionsCell = newRow.insertCell(5)
 
   const imgElement = document.createElement('img')
   imgElement.src = imageUrl
@@ -55,6 +79,13 @@ function insertNewEntry({ imageUrl, model, year, plate, color }) {
   colorBlock.classList.add('car-color')
   colorBlock.style.backgroundColor = color
   colorCell.appendChild(colorBlock)
+
+  const deleteButton = document.createElement('button')
+  deleteButton.type = 'button'
+  deleteButton.textContent = 'Excluir'
+  deleteButton.addEventListener('click', () => deleteCar(newRow, plate))
+
+  actionsCell.appendChild(deleteButton)
 }
 
 async function fetchCars() {
