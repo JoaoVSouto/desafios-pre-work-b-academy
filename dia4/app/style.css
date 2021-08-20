@@ -7,10 +7,6 @@ body {
   margin-top: 4rem;
 }
 
-.hide {
-  display: none;
-}
-
 .cars-container {
   display: flex;
   justify-content: center;
@@ -22,6 +18,15 @@ body {
 
 .car-form input {
   width: 100%;
+}
+
+.error {
+  display: block;
+  margin-top: 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: tomato;
+  max-width: fit-content;
 }
 
 .car-form-submit-btn {
@@ -50,4 +55,8 @@ body {
   height: 50px;
   border-radius: 5px;
   margin: 0.5rem;
+}
+
+.hide {
+  display: none;
 }

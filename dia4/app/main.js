@@ -1,5 +1,7 @@
 import './style.css'
 
+const CARS_URL = 'http://localhost:3333/cars'
+
 function showNotFoundCarsMessage() {
   const notFoundMessage = document.querySelector(
     '[data-js="cards-not-found-msg"]'
@@ -12,6 +14,21 @@ function hideNotFoundCarsMessage() {
     '[data-js="cards-not-found-msg"]'
   )
   notFoundMessage.classList.add('hide')
+}
+
+function showErrorMessage(message) {
+  const carRequestErrorMessage = document.querySelector(
+    '[data-js="car-request-error-message"]'
+  )
+  carRequestErrorMessage.classList.remove('hide')
+  carRequestErrorMessage.textContent = `❗ ${message}`
+}
+
+function hideErrorMessage() {
+  const carRequestErrorMessage = document.querySelector(
+    '[data-js="car-request-error-message"]'
+  )
+  carRequestErrorMessage.classList.add('hide')
 }
 
 function insertNewEntry({ imageUrl, model, year, plate, color }) {
@@ -41,7 +58,7 @@ function insertNewEntry({ imageUrl, model, year, plate, color }) {
 }
 
 async function fetchCars() {
-  const response = await fetch('http://localhost:3333/cars')
+  const response = await fetch(CARS_URL)
 
   if (!response.ok) {
     return
@@ -63,9 +80,35 @@ async function fetchCars() {
   }
 }
 
+async function createNewCar({ imageUrl, model, year, plate, color }) {
+  const response = await fetch(CARS_URL, {
+    method: 'POST',
+    headers: {
+      'Content-type': 'application/json',
+    },
+    body: JSON.stringify({
+      image: imageUrl,
+      brandModel: model,
+      year,
+      plate,
+      color,
+    }),
+  })
+
+  if (!response.ok) {
+    const errorData = await response.json()
+    showErrorMessage(errorData.message)
+    throw new Error('Invalid request')
+  }
+
+  hideErrorMessage()
+  hideNotFoundCarsMessage()
+  insertNewEntry({ imageUrl, model, year, plate, color })
+}
+
 const carForm = document.querySelector('[data-js="car-form"]')
 
-carForm.addEventListener('submit', e => {
+carForm.addEventListener('submit', async e => {
   e.preventDefault()
 
   const imageUrl = carForm.image.value
@@ -82,7 +125,7 @@ carForm.addEventListener('submit', e => {
     color,
   }
 
-  insertNewEntry(payload)
+  await createNewCar(payload)
 
   carForm.image.value = ''
   carForm.model.value = ''
